@@ -21,9 +21,13 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
-    specs: [
-        './test/specs/test1.e2e.js'
-    ],
+    specs: ["test/specs/**/*.js"],
+
+    suites: {
+        full: [['./test/specs/**/*.js']],
+        smoke: [['./test/specs/login.e2e.js']],
+        e2e: [['./test/specs/dragAndDrop.e2e.js']]
+},
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -50,8 +54,10 @@ exports.config = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
-        browserName: 'chrome'
+    capabilities: [
+        {
+            browserName: 'chrome',
+        //'goog:chromeOptions': {args: ['--headless']}
     }],
 
     //
@@ -110,6 +116,7 @@ exports.config = {
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
     framework: 'mocha',
+    injectGlobals: true,
     
     //
     // The number of times to retry the entire specfile when it fails as a whole
@@ -125,15 +132,15 @@ exports.config = {
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: ['spec',
-    ['allure', {outputDir: 'allure-results'}],
-    ['mochawesome',{outputDir: './MochaAwesome-results', outputFileFormat: function(opts) { 
+    ['allure', { outputDir: 'allure-results'}],
+    ['mochawesome',{ outputDir: './MochaAwesome-results', outputFileFormat: function(opts) { 
         return `results-${opts.cid}.${opts.capabilities.browserName}.json`
     }}]],
-    mochawesomeOpts: {
-        includeScreenshots:true,
-        screenshotUseRelativePath:true,
-        json: true,
-    },
+    // mochawesomeOpts: {
+    //     //includeScreenshots:true,
+    //    // screenshotUseRelativePath:true,
+    //     json: true,
+    // },
 
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
@@ -143,8 +150,8 @@ exports.config = {
     },
 
     onPrepare(config,capabilities){
-        config.specs = 'test/specs/**/*.js';
-        capabilities.browserName= ['firefox'];
+        //config.specs = 'test/specs/**/*.js';
+        //capabilities.browserName= ['firefox'];
         console.log(capabilities.browserName);
     },
     onComplete: function (exitCode, config, capabilities, results) {
@@ -204,38 +211,48 @@ exports.config = {
      * @param {Array.<String>} specs        List of spec file paths that are to be run
      * @param {object}         browser      instance of created browser/device session
      */
-    // before: function (capabilities, specs) {
-    // },
+    before: function (capabilities, specs) {
+        console.log('Before');
+    },
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {string} commandName hook command name
      * @param {Array} args arguments that command would receive
      */
-    // beforeCommand: function (commandName, args) {
-    // },
+    beforeCommand: function (commandName, args) {
+        //console.log('BeforeCommand');
+     },
     /**
      * Hook that gets executed before the suite starts
      * @param {object} suite suite details
      */
-    // beforeSuite: function (suite) {
-    // },
+     beforeSuite: function (suite) {
+        console.log('Beforesuite');
+ },
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
-    // beforeTest: function (test, context) {
-    // },
+    beforeTest: function (test, context) {
+        console.log('BeforeTest');
+    },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)
      */
-    // beforeHook: function (test, context, hookName) {
-    // },
-    /**
+    beforeEach: function (test, context, hookName) {
+        console.log('BeforeEach');
+    },
+    beforeHook: function (test, context, hookName) {
+        console.log('BeforeHook');
+    },
+
+    /** 
      * Hook that gets executed _after_ a hook within the suite starts (e.g. runs after calling
      * afterEach in Mocha)
      */
-    // afterHook: function (test, context, { error, result, duration, passed, retries }, hookName) {
-    // },
+     afterHook: function (test, context, { error, result, duration, passed, retries }, hookName) {
+        console.log('AfterHook');
+     },
     /**
      * Function to be executed after a test (in Mocha/Jasmine only)
      * @param {object}  test             test object
@@ -247,9 +264,11 @@ exports.config = {
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
     afterTest: async function(test, context, { error, result, duration, passed, retries }) {
+        console.log('After Test Start');
         if (!passed) {
             await browser.takeScreenshot();
         }
+        console.log('After Test End');
     },
 
 
@@ -257,8 +276,9 @@ exports.config = {
      * Hook that gets executed after the suite has ended
      * @param {object} suite suite details
      */
-    // afterSuite: function (suite) {
-    // },
+     afterSuite: function (suite) {
+        console.log('After Suite');
+     },
     /**
      * Runs after a WebdriverIO command gets executed
      * @param {string} commandName hook command name
@@ -266,8 +286,9 @@ exports.config = {
      * @param {number} result 0 - command success, 1 - command error
      * @param {object} error error object if any
      */
-    // afterCommand: function (commandName, args, result, error) {
-    // },
+    afterCommand: function (commandName, args, result, error) {
+        //console.log('AfterCommand');
+     },
     /**
      * Gets executed after all tests are done. You still have access to all global variables from
      * the test.
@@ -275,16 +296,18 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that ran
      */
-    // after: function (result, capabilities, specs) {
-    // },
+    after: function (result, capabilities, specs) {
+        console.log('After');
+    },
     /**
      * Gets executed right after terminating the webdriver session.
      * @param {object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that ran
      */
-    // afterSession: function (config, capabilities, specs) {
-    // },
+    afterSession: function (config, capabilities, specs) {
+        console.log('After Session');
+    },
     /**
      * Gets executed after all workers got shut down and the process is about to exit. An error
      * thrown in the onComplete hook will result in the test run failing.
@@ -293,13 +316,15 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-    // onComplete: function(exitCode, config, capabilities, results) {
-    // },
+    onComplete: function(exitCode, config, capabilities, results) {
+        console.log('After Complete');
+    },
     /**
     * Gets executed when a refresh happens.
     * @param {string} oldSessionId session ID of the old session
     * @param {string} newSessionId session ID of the new session
     */
-    // onReload: function(oldSessionId, newSessionId) {
-    // }
+    onReload: function(oldSessionId, newSessionId) {
+        console.log('On reload');
+    }
 }

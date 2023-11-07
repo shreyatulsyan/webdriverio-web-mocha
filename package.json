@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "wdio": "wdio run ./wdio.conf.js",
-    "web": "npx wdio run ./wdio.conf.js mocha --reporter mochawesome ",
-    "generateMochawesome":"marge MochaAwesome-results/merged.json --reportTitle 'My Project Results'"
+    "smoke": "npx wdio run ./wdio.conf.js --suite smoke mocha --reporter mochawesome ",
+    "e2e": "npx wdio run ./wdio.conf.js --suite e2e mocha --reporter mochawesome ",
+    "full": "npx wdio run ./wdio.conf.js --suite full --reporter mochawesome ",
+    "generateReport":"marge MochaAwesome-results/merged.json --reportTitle 'My Project Results'"
   },
   "keywords": [],
   "author": "",
