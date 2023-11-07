@@ -126,7 +126,14 @@ exports.config = {
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: ['spec',
     ['allure', {outputDir: 'allure-results'}],
-    ['mochawesome',{outputDir: './MochaAwesome-results'}]],
+    ['mochawesome',{outputDir: './MochaAwesome-results', outputFileFormat: function(opts) { 
+        return `results-${opts.cid}.${opts.capabilities.browserName}.json`
+    }}]],
+    mochawesomeOpts: {
+        includeScreenshots:true,
+        screenshotUseRelativePath:true,
+        json: true,
+    },
 
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
@@ -136,10 +143,14 @@ exports.config = {
     },
 
     onPrepare(config,capabilities){
-        config.specs = 'dragAndDrop.e2e.js';
+        config.specs = 'test/specs/**/*.js';
         capabilities.browserName= ['firefox'];
         console.log(capabilities.browserName);
     },
+    onComplete: function (exitCode, config, capabilities, results) {
+        const mergeResults = require('wdio-mochawesome-reporter/mergeResults')
+        mergeResults('./MochaAwesome-results', "results-*","merged.json")
+      },
 
     //
     // =====

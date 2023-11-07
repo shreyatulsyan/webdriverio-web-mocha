@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "wdio": "wdio run ./wdio.conf.js",
-    "runMocha": "npx wdio run ./wdio.conf.js --reporter mochawesome",
-    "generateMochawesome":"marge /Users/shreya.tulsyan/Documents/GitCodes/WebdriverIOMOCHA/mochawesome-report/mochawesome.json --reportTitle 'My Project Results'"
+    "web": "npx wdio run ./wdio.conf.js mocha --reporter mochawesome ",
+    "generateMochawesome":"marge MochaAwesome-results/merged.json --reportTitle 'My Project Results'"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +23,7 @@
     "@wdio/mocha-framework": "^8.21.0",
     "@wdio/spec-reporter": "^8.21.0",
     "mochawesome": "^7.1.3",
-    "mochawesome-report-generator": "^6.2.0",
+    "mochawesome-report-generator": "^3.1.5",
     "wdio-mochawesome-reporter": "^4.0.0",
     "wdio-wait-for": "^3.0.7"
   }
