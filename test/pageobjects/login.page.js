@@ -36,6 +36,9 @@ class LoginPage extends Page {
     open () {
         return super.open('login');
     }
+    dragAndDrop(){
+        return super.open('drag_and_drop');
+    }
 }
 
 module.exports = new LoginPage();
