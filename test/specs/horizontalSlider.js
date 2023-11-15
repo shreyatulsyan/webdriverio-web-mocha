@@ -8,6 +8,5 @@ describe('Horizontal Slider by pressing keys', async()=>{
         await browser.keys([Key.ArrowRight,Key.ArrowRight,Key.ArrowRight]);
         await expect(horizontalSliderPage.rangeValue).toHaveText('1.5');
         await browser.saveScreenshot('Screenshots/Slider.png')
-        
     })
 })
