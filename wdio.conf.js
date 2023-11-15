@@ -21,12 +21,12 @@ exports.config = {
     // then the current working directory is where your `package.json` resides, so `wdio`
     // will be called from there.
     //
-    specs: ["test/specs/**/*.js"],
+    specs: [['./test/specs/**/*.js']],
 
     suites: {
         full: [['./test/specs/**/*.js']],
         smoke: [['./test/specs/login.e2e.js']],
-        e2e: [['./test/specs/dragAndDrop.e2e.js']]
+        e2e: [['./test/specs/dragAndDrop.e2e.js','./test/specs/login.e2e.js']]
 },
     // Patterns to exclude.
     exclude: [
@@ -58,7 +58,12 @@ exports.config = {
         {
             browserName: 'chrome',
         //'goog:chromeOptions': {args: ['--headless']}
-    }],
+         },
+        //  {
+        //     browserName: 'firefox',
+        // //'goog:chromeOptions': {args: ['--headless']}
+        //  },
+    ],
 
     //
     // ===================
@@ -68,6 +73,7 @@ exports.config = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: 'info',
+    outputDir: 'Logs',
     //
     // Set specific log levels per logger
     // loggers:
@@ -107,7 +113,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['crossbrowsertesting'],
+    //services: ['crossbrowsertesting'],
 
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -152,11 +158,32 @@ exports.config = {
     onPrepare(config,capabilities){
         //config.specs = 'test/specs/**/*.js';
         //capabilities.browserName= ['firefox'];
-        console.log(capabilities.browserName);
+        console.log('onPrepare =>');
     },
     onComplete: function (exitCode, config, capabilities, results) {
+        console.log('onComplete =>');
         const mergeResults = require('wdio-mochawesome-reporter/mergeResults')
         mergeResults('./MochaAwesome-results', "results-*","merged.json")
+        const allure = require('allure-commandline')
+        const reportError = new Error('Could not generate Allure report')
+        const generation = allure(['generate', 'allure-results', '--clean'])
+        return new Promise((resolve, reject) => {
+            const generationTimeout = setTimeout(
+                () => reject(reportError),
+                5000)
+
+            generation.on('exit', function(exitCode) {
+                clearTimeout(generationTimeout)
+
+                if (exitCode !== 0) {
+                    return reject(reportError)
+                }
+
+                console.log('Allure report successfully generated')
+                resolve()
+            }) })
+
+        
       },
 
     //
@@ -183,8 +210,9 @@ exports.config = {
      * @param  {object} args     object that will be merged with the main configuration once worker is initialized
      * @param  {object} execArgv list of string arguments passed to the worker process
      */
-    // onWorkerStart: function (cid, caps, specs, args, execArgv) {
-    // },
+    onWorkerStart: function (cid, caps, specs, args, execArgv) {
+        console.log('On worker start =>');
+    },
     /**
      * Gets executed just after a worker process has exited.
      * @param  {string} cid      capability id (e.g 0-0)
@@ -192,8 +220,9 @@ exports.config = {
      * @param  {object} specs    specs to be run in the worker process
      * @param  {number} retries  number of retries used
      */
-    // onWorkerEnd: function (cid, exitCode, specs, retries) {
-    // },
+    onWorkerEnd: function (cid, exitCode, specs, retries) {
+        console.log('On worker end =>');
+    },
     /**
      * Gets executed just before initialising the webdriver session and test framework. It allows you
      * to manipulate configurations depending on the capability or spec.
@@ -202,8 +231,9 @@ exports.config = {
      * @param {Array.<String>} specs List of spec file paths that are to be run
      * @param {string} cid worker id (e.g. 0-0)
      */
-    // beforeSession: function (config, capabilities, specs, cid) {
-    // },
+    beforeSession: function (config, capabilities, specs, cid) {
+        console.log('Before Session =>');
+    },
     /**
      * Gets executed before test execution begins. At this point you can access to all global
      * variables like `browser`. It is the perfect place to define custom commands.
@@ -212,7 +242,7 @@ exports.config = {
      * @param {object}         browser      instance of created browser/device session
      */
     before: function (capabilities, specs) {
-        console.log('Before');
+        console.log('Before =>');
     },
     /**
      * Runs before a WebdriverIO command gets executed.
@@ -227,31 +257,35 @@ exports.config = {
      * @param {object} suite suite details
      */
      beforeSuite: function (suite) {
-        console.log('Beforesuite');
+        console.log(suite);
+        console.log('BeforeSuite =>');
  },
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
     beforeTest: function (test, context) {
-        console.log('BeforeTest');
+        console.log('BeforeTest =>');
     },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)
      */
     beforeEach: function (test, context, hookName) {
-        console.log('BeforeEach');
+        console.log('BeforeEach =>');
     },
     beforeHook: function (test, context, hookName) {
-        console.log('BeforeHook');
+        console.log('BeforeHook =>');
     },
 
     /** 
      * Hook that gets executed _after_ a hook within the suite starts (e.g. runs after calling
      * afterEach in Mocha)
      */
+    afterEach: function (test, context, hookName) {
+        console.log('AfterEach =>');
+    },
      afterHook: function (test, context, { error, result, duration, passed, retries }, hookName) {
-        console.log('AfterHook');
+        console.log('AfterHook =>');
      },
     /**
      * Function to be executed after a test (in Mocha/Jasmine only)
@@ -264,12 +298,12 @@ exports.config = {
      * @param {object}  result.retries   information about spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
     afterTest: async function(test, context, { error, result, duration, passed, retries }) {
-        console.log('After Test Start');
+        console.log('AfterTest => Start');
         if (!passed) {
             await browser.takeScreenshot();
         }
-        console.log('After Test End');
     },
+
 
 
     /**
@@ -277,7 +311,7 @@ exports.config = {
      * @param {object} suite suite details
      */
      afterSuite: function (suite) {
-        console.log('After Suite');
+        console.log('AfterSuite =>');
      },
     /**
      * Runs after a WebdriverIO command gets executed
@@ -297,7 +331,7 @@ exports.config = {
      * @param {Array.<String>} specs List of spec file paths that ran
      */
     after: function (result, capabilities, specs) {
-        console.log('After');
+        console.log('After =>');
     },
     /**
      * Gets executed right after terminating the webdriver session.
@@ -306,7 +340,7 @@ exports.config = {
      * @param {Array.<String>} specs List of spec file paths that ran
      */
     afterSession: function (config, capabilities, specs) {
-        console.log('After Session');
+        console.log('After Session =>');
     },
     /**
      * Gets executed after all workers got shut down and the process is about to exit. An error
@@ -316,15 +350,15 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-    onComplete: function(exitCode, config, capabilities, results) {
-        console.log('After Complete');
-    },
+    // onComplete: function(exitCode, config, capabilities, results) {
+    //     console.log('On Complete =>');
+    // },
     /**
     * Gets executed when a refresh happens.
     * @param {string} oldSessionId session ID of the old session
     * @param {string} newSessionId session ID of the new session
     */
     onReload: function(oldSessionId, newSessionId) {
-        console.log('On reload');
+        console.log('OnReload =>');
     }
 }
