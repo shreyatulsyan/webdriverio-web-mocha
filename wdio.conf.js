@@ -25,7 +25,7 @@ exports.config = {
 
     suites: {
         full: [['./test/specs/**/*.js']],
-        smoke: [['./test/specs/login.e2e.js']],
+        smoke: [['./test/specs/uploadFile.js']],
         e2e: [['./test/specs/dragAndDrop.e2e.js','./test/specs/login.e2e.js']]
 },
     // Patterns to exclude.
@@ -257,7 +257,6 @@ exports.config = {
      * @param {object} suite suite details
      */
      beforeSuite: function (suite) {
-        console.log(suite);
         console.log('BeforeSuite =>');
  },
     /**
@@ -274,7 +273,6 @@ exports.config = {
         console.log('BeforeEach =>');
     },
     beforeHook: function (test, context, hookName) {
-        console.log('BeforeHook =>');
     },
 
     /** 
@@ -285,7 +283,6 @@ exports.config = {
         console.log('AfterEach =>');
     },
      afterHook: function (test, context, { error, result, duration, passed, retries }, hookName) {
-        console.log('AfterHook =>');
      },
     /**
      * Function to be executed after a test (in Mocha/Jasmine only)

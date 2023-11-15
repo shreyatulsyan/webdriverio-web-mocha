@@ -33,11 +33,14 @@ class LoginPage extends Page {
     /**
      * overwrite specific options to adapt it to page object
      */
-    open () {
-        return super.open('login');
+    open (param) {
+        return super.open(param);
     }
     dragAndDrop(){
         return super.open('drag_and_drop');
+    }
+    dropdown(){
+        return super.open('dropdown')
     }
 }
 
