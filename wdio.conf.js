@@ -25,7 +25,7 @@ exports.config = {
 
     suites: {
         full: [['./test/specs/**/*.js']],
-        smoke: [['./test/specs/uploadFile.js']],
+        smoke: [['./test/specs/horizontalSlider.js']],
         e2e: [['./test/specs/dragAndDrop.e2e.js','./test/specs/login.e2e.js']]
 },
     // Patterns to exclude.
