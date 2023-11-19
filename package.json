@@ -8,8 +8,8 @@
     "e2e": "npx wdio run ./wdio.conf.js --suite e2e mocha --reporter mochawesome ",
     "full": "npx wdio run ./wdio.conf.js --suite full --reporter mochawesome ",
     "testing": "npx wdio run ./wdio.conf.js --reporter mochawesome ",
-    "generateReport": "marge MochaAwesome-results/merged.json --reportTitle 'My Project Results'"
-    
+    "generateReport": "marge MochaAwesome-results/merged.json --reportTitle 'My Project Results'",
+    "allure-report": "allure generate --clean allure-results && allure open"
   },
   "keywords": [],
   "author": "",
