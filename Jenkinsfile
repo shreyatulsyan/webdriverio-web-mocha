@@ -9,7 +9,7 @@ pipeline {
         stage('Build Dependencies'){
             steps{
                 git branch: 'main', 
-                url: 'https://github.com/shreyatulsyan/WebdriverIOMOCHA.git'
+                url: 'https://github.com/shreyatulsyan/webdriverio-web-mocha.git'
                 sh 'npm install'
             }
         }
