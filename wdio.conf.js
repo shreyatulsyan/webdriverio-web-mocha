@@ -1,3 +1,4 @@
+let allureDir = "./reports/allure"
 exports.config = {
     //
     // ====================
@@ -138,7 +139,7 @@ exports.config = {
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: ['spec',
-    ['allure', { outputDir: 'allure-results'}],
+    ['allure', { outputDir: allureDir + '/allure-results'}],
     ['mochawesome',{ outputDir: './MochaAwesome-results', outputFileFormat: function(opts) { 
         return `results-${opts.cid}.${opts.capabilities.browserName}.json`
     }}]],
@@ -159,6 +160,21 @@ exports.config = {
         //config.specs = 'test/specs/**/*.js';
         //capabilities.browserName= ['firefox'];
         console.log('onPrepare =>');
+        const fs = require('fs');
+        let dir = allureDir + '/allure-results'
+        try{
+        if(fs.existsSync(dir)){
+            fs.rmSync(dir,{recursive:true})
+            console.log(`${dir} is deleted.`)
+        }
+        }
+        catch(err){
+            console.error('Error while deleting this dir')
+            if(!fs.existsSync(dir)){
+                fs.mkdirSync(dir,{recursive:true})
+                console.log(`${dir} got created.`)
+            }
+        }
     },
     onComplete: function (exitCode, config, capabilities, results) {
         console.log('onComplete =>');
@@ -166,7 +182,7 @@ exports.config = {
         mergeResults('./MochaAwesome-results', "results-*","merged.json")
         const allure = require('allure-commandline')
         const reportError = new Error('Could not generate Allure report')
-        const generation = allure(['generate', 'allure-results', '--clean'])
+        const generation = allure(['generate', allureDir + '/allure-results', '--clean', '-o', allureDir + '/allure-report'])
         return new Promise((resolve, reject) => {
             const generationTimeout = setTimeout(
                 () => reject(reportError),
@@ -212,7 +228,7 @@ exports.config = {
      * @param  {object} execArgv list of string arguments passed to the worker process
      */
     onWorkerStart: function (cid, caps, specs, args, execArgv) {
-        console.log('On worker start =>');
+        console.log('On worker start =>');   
     },
     /**
      * Gets executed just after a worker process has exited.

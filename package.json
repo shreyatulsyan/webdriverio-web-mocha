@@ -9,7 +9,7 @@
     "full": "npx wdio run ./wdio.conf.js --suite full --reporter mochawesome ",
     "testing": "npx wdio run ./wdio.conf.js --reporter mochawesome ",
     "generateReport": "marge MochaAwesome-results/merged.json --reportTitle 'My Project Results'",
-    "allure-report": "allure generate --clean allure-results && allure open"
+    "allure-report": "allure generate --clean ./reports/allure/allure-results -o ./reports/allure/allure-reports && allure open"
   },
   "keywords": [],
   "author": "",
