@@ -9,6 +9,7 @@
     "full": "npx wdio run ./wdio.conf.js --suite full --reporter mochawesome ",
     "testing": "npx wdio run ./wdio.conf.js --reporter mochawesome ",
     "generateReport": "marge MochaAwesome-results/merged.json --reportTitle 'My Project Results'"
+    
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "@wdio/local-runner": "^8.21.0",
     "@wdio/mocha-framework": "^8.21.0",
     "@wdio/spec-reporter": "^8.21.0",
+    "allure-commandline": "^2.24.1",
     "csv-parse": "^5.5.2",
     "dotenv": "^16.3.1",
     "mochawesome": "^7.1.3",

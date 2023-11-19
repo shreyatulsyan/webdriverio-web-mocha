@@ -176,6 +176,7 @@ exports.config = {
                 clearTimeout(generationTimeout)
 
                 if (exitCode !== 0) {
+                    console.log('Entered in exit code')
                     return reject(reportError)
                 }
 
