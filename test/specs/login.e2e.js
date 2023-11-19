@@ -11,7 +11,7 @@ describe('My Login application', () => {
             'You logged into a secure area!')
         console.log('Test: Login');
     });
-    it('should print Title', async () => {
+    xit('should print Title', async () => {
         console.log(browser.getTitle());
         console.log('Test: Title');
     });

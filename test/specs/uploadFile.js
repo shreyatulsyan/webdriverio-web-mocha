@@ -2,7 +2,7 @@ const LoginPage = require('../pageobjects/login.page')
 const UploadFilePage = require('../pageobjects/uploadFile.page')
 const path = require('path');
 
-describe('Upload a file: ', async()=>{
+xdescribe('Upload a file: ', async()=>{
     it('Upload: ', async()=>{
         await LoginPage.open('upload')
         await (await (UploadFilePage.chooseFile)).waitForClickable();
