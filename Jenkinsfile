@@ -6,13 +6,17 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
-            steps {
-            git branch: 'main', 
+        stage('Build Dependencies'){
+            steps{
+                git branch: 'main', 
                 url: 'https://github.com/shreyatulsyan/WebdriverIOMOCHA.git'
+                sh 'npm install'
+            }
+        }
+        stage('Run tests') {
+            steps { 
             allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
-            sh '''npm install
-            npm run full'''
+            sh 'npm run full'
             }
         }
     }
