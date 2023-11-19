@@ -15,9 +15,14 @@ pipeline {
         }
         stage('Run tests') {
             steps { 
-            allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
             sh 'npm run full'
+            
             }
         }
     }
+    post {
+        always {
+    allure includeProperties: false, jdk: '', results: [[path: 'allure-results']]
+  }
+}
 }
