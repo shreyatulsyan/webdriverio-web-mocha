@@ -1,4 +1,3 @@
-
 # webdriverio-web-mocha
 Hi there ✋!
 
@@ -29,10 +28,17 @@ docker build -t imagename1 .
 docker run --name run1 imagename1
 ```
 
+##### Remove container
+```
+docker rm run1
+```
+
 ##### Copy reports from docker to local
 ``` 
+docker cp <PATH_IN_CONTAINER> <LOCAL_PATH>
 docker cp run8:WORKDIR/reports/allure/allure-results ./reports/allure/allure-results
 ```
+
 
 
 
