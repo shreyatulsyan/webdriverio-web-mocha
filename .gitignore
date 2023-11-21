@@ -1,6 +1,13 @@
+# Dependency directories
 node_modules/
 package-lock.json
-allure-results
+
+
+# Logs
 Logs/
-allure-report
+
+# Test Reports
+# allure-results/
+# allure-report/
+reports
 MochaAwesome-results

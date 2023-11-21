@@ -1,4 +1,4 @@
-const DragAndDropPage = require('../pageobjects/dragAndDropPage')
+const DragAndDropPage = require('../pageobjects/DragAndDropPage')
 const LoginPage = require('../pageobjects/login.page')
 describe('DragAndDrop', async()=>{
 

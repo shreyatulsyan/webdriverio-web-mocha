@@ -1,0 +1,5 @@
+{
+  "error": "no such element",
+  "message": "no such element: Unable to locate element: {\"method\":\"xpath\",\"selector\":\"//div[@class='sliderContainer']/input\"}\n  (Session info: chrome=119.0.6045.159)",
+  "stacktrace": "#0 0x55f0b1dc55e3 <unknown>\n#1 0x55f0b1a880b7 <unknown>\n#2 0x55f0b1ad5f53 <unknown>\n#3 0x55f0b1ad6051 <unknown>\n#4 0x55f0b1b1b9c4 <unknown>\n#5 0x55f0b1afcf1d <unknown>\n#6 0x55f0b1b18b3d <unknown>\n#7 0x55f0b1afccc3 <unknown>\n#8 0x55f0b1ac80e4 <unknown>\n#9 0x55f0b1ac90ae <unknown>\n#10 0x55f0b1d8bce1 <unknown>\n#11 0x55f0b1d8fb7e <unknown>\n#12 0x55f0b1d794b5 <unknown>\n#13 0x55f0b1d907d6 <unknown>\n#14 0x55f0b1d5cdbf <unknown>\n#15 0x55f0b1db3748 <unknown>\n#16 0x55f0b1db3917 <unknown>\n#17 0x55f0b1dc4773 <unknown>\n#18 0x7fd62a54e044 <unknown>\n"
+}
